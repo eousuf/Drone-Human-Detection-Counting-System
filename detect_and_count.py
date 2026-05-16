@@ -65,6 +65,7 @@ def main():
         results = model.predict(source=image_path, conf=0.15, verbose=False)[0]
 
         human_count = 0
+        car_count = 0
 
         # Draw bounding boxes
         for box in results.boxes:
@@ -76,13 +77,14 @@ def main():
                 human_count += 1
                 cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
                 cv2.putText(img, 'Human', (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-            elif class_id == 3:  # Car
+            elif class_id == 3: # Car
+                car_count += 1  
                 cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
                 cv2.putText(img, 'Car', (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
 
         # Draw Overlay Text Info Block
-        count_text = f"[{current_index + 1}/{total_images}] File: {image_name} | Humans: {human_count}"
-        cv2.rectangle(img, (10, 10), (550, 50), (0, 0, 0), -1)
+        count_text = f"[{current_index + 1}/{total_images}] File: {image_name} | Humans: {human_count} | Cars: {car_count}"
+        cv2.rectangle(img, (10, 10), (650, 50), (0, 0, 0), -1)
         cv2.putText(img, count_text, (20, 38), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (255, 255, 255), 2)
 
         window_name = 'Drone Detection & Counting Pipeline'
